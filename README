@@ -1,0 +1,35 @@
+Ben Haase
+CS 4760
+Assignment 2
+
+To make both master and slave executable file use
+	make
+
+make clean will remove all .o files and the cstest file created
+by running the program as well as the library file
+
+To run the program use
+	./master
+or
+	./master -t x
+The -t option specifies the time limit on the program, where x should be
+an integer value and represents time in seconds. If not specified the
+default time used will be 300 seconds (5min). On time out the master process
+will kill all slave processes, clean up shared memory and semaphores, and exit.
+
+ctrl c (^C) signal will be intercepted by the master process who then
+terminates the slave processes, cleans up shared memory, and exits.
+
+The file which the slave processes write to is called "cstest" and
+will be opened in append mode.
+
+Description:
+The master process spawns 19 slave processes who exec "slave" and
+compete for a shared resource. The master process sets up shared
+memory to hold semaphores and counts for the processes. 
+Upon the reciept of (^C) or a time out
+all processes terminate. Slave processes will print messages to stderr
+on: entry to CS, exit from the CS, waiting and acquiring semaphores, upon performing
+3 writes to the shared file before terminating, time out event, and (^C).
+The semaphore sem is used as a buffer in an attempt to keep one process from entering
+the critical section multiple times in a row.  Mutex guards entry to the critical section.
